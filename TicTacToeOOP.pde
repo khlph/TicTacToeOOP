@@ -1,10 +1,12 @@
 Board board;
 Controller playerOne;
 Controller playerTwo;
-Display display;
+Display display = new Display();
 int row = 3;
 int column = 3;
 int turn = 1;
+boolean stop = false;
+int countturn = 0; 
 
 void setup(){
   size( 500, 500);
@@ -15,12 +17,14 @@ void setup(){
 
 void draw(){
   board.drawBoard();
-  if(playerOne.getWinner() == 1){
-    //do something
+  if(playerOne.getWinner() == 1 ){
+    display.showWinner(turn());
   }
-  if(playerTwo.getWinner() == 1){
-    //do something
+  if(playerTwo.getWinner() == 1 ){
+    display.showWinner(turn()); 
   }
+  if(countturn == row*column && turn().getWinner() == 0){
+    display.itsdraw();}
 }
 
 void mousePressed(){
@@ -29,10 +33,14 @@ void mousePressed(){
     if (((mouseX >= ((i-1)*width)/row) && (mouseX <= (i*width)/row))){
       for( int j = 1; j <= column; j++){
         if (((mouseY >= ((j-1)*height)/column) && (mouseY <= (j*height)/column))){
-          if(turn().board[i][j] != 0) return;
-          turn().setValue( i, j);
-          changeturn();
+          if(turn().board[i-1][j-1] != 0) return;
           
+          turn().setValue( i-1, j-1);
+          display.drawOX( (i*2-1)*width/(row*2), (j*2-1)*height/(column*2));
+          
+          if(turn().getWinner() != 0) return;
+          changeturn();
+          countturn++;
         }
       }
     }
@@ -41,16 +49,15 @@ void mousePressed(){
 }
 
 Controller turn(){
-  //
   if(turn == 1)
     return playerOne;
-  if(turn == 2)
+  else
     return playerTwo;
 }
 
 int changeturn(){
   if(turn == 1)
     return turn = 2;
-  if(turn == 2)
+  else
     return turn = 1;
 }
