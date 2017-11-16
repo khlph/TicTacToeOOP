@@ -1,7 +1,15 @@
 class Controller extends Board{
+  
   int countturn;
-  Controller(int rows,int columns){
+  int rows;
+  int columns;
+  int board[][];
+  String name;
+  Controller(int rows,int columns,String name){
+    super(rows,columns);
     countturn = 0;
+    this.name = name;
+    this.board = new int [rows][columns];
   }
   
   int getWinner(){
@@ -12,13 +20,13 @@ class Controller extends Board{
       
       int rowSum = 0;
       int colSum = 0;
-      diag1 += board[i][i];
-      diag2 += board[i][2-i];
+      diag1 += this.board[i][i];
+      diag2 += this.board[i][2-i];
       
       for( int j = 0 ; j < columns ; j++){
         
-        rowSum += board[i][j];
-        colSum += board[j][i];
+        rowSum += this.board[i][j];
+        colSum += this.board[j][i];
         
       }
       if ( rowSum == rows || colSum == columns || diag1 == rows || diag2 == columns )
@@ -26,6 +34,9 @@ class Controller extends Board{
       }  
 
     return 0; 
+  }
+  void setValue(int i, int j){
+    this.board[i][j] = 1;
   }
 }
     
